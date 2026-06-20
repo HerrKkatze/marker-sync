@@ -1,0 +1,18 @@
+[Unit]
+Description=Marker templates synchronization service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+PrivateTmp=no
+TimeoutStartSec=60
+TimeoutStopSec=30
+Restart=no
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=marker-sync
+ExecStart=/usr/local/bin/marker-sync.sh
+NoNewPrivileges=true

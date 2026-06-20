@@ -1,0 +1,41 @@
+/var/log/marker-sync.log /var/log/marker_sync.log {
+    # Ротация при достижении 5 МБ
+    size 5M
+    
+    # Хранить максимум 6 файлов
+    rotate 6
+    
+    # НЕ сжимать автоматически
+    nocompress
+    
+    # Игнорировать ошибку, если файла лога нет
+    missingok
+    
+    # Не ротировать пустой файл
+    notifempty
+    
+    # Создавать новый пустой файл лога
+    create 0644 root root
+    
+    # Скрипт выполняется ПОСЛЕ ротации
+    lastaction
+        cd /var/log
+        
+        # Получаем список несжатых файлов, отсортированных по номеру (УБЫВАНИЕ)
+        files=$(ls -1 marker-sync.log.[0-9]* 2>/dev/null | grep -v '\.gz$' | sort -t. -k3 -n -r)
+        
+        # Считаем количество
+        count=$(echo "$files" | grep -c .)
+        
+        # Если больше 3 несжатых — сжимаем самые старые
+        if [ "$count" -gt 3 ]; then
+            to_compress=$(echo "$files" | head -n -3)
+            
+            for file in $to_compress; do
+                if [ -f "$file" ]; then
+                    gzip -f "$file"
+                fi
+            done
+        fi
+    endscript
+}

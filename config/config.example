@@ -1,0 +1,18 @@
+# Конфигурация marker-sync
+# IP-адрес или имя Samba-сервера
+SERVER_IP="169.254.190.157"
+
+# Имя расшаренной папки
+SHARE_NAME="share"
+
+# Путь внутри шары (относительно корня шары)
+REMOTE_DIR="123"
+
+# Локальная рабочая папка с шаблонами
+TEMPLATES_DIR="/var/lib/marker/templates"
+
+# Временная папка для атомарной загрузки
+TMP_DIR="/tmp/marker-sync-tmp"
+
+# Точка монтирования шары
+MOUNT_POINT="/mnt/marker-share"
